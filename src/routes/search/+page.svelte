@@ -5,3 +5,11 @@
 </script>
 
 <h1>Search</h1>
+
+<main class="container">
+	<fieldset>
+		<input name="gameTitle" placeholder="Search by Game Title..." type="search" />
+	</fieldset>
+
+	<a href="/top" role="button">Back</a>
+</main>
