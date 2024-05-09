@@ -8,5 +8,5 @@
 
 <main class="container">
 	<button>Refresh</button>
-	<a href="/arcade/search" role="button">Search</a>
+	<a href="/search" role="button">Search</a>
 </main>

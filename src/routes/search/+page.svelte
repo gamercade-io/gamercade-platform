@@ -11,5 +11,5 @@
 		<input name="gameTitle" placeholder="Search by Game Title..." type="search" />
 	</fieldset>
 
-	<a href="/arcade/top" role="button">Back</a>
+	<a href="/top" role="button">Back</a>
 </main>
