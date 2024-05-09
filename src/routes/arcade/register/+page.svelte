@@ -22,6 +22,6 @@
 	<label for="Email Confirmation">Email Confirmation</label>
 	<input type="email" id="emailConfirm" placeholder="Email Confirmation" />
 
-	<a href="/../" role="button">Back</a>
+	<a href="/arcade" role="button">Back</a>
 	<button>Create</button>
 </main>
