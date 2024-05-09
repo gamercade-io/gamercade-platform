@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import type { PageData } from '../register/$types';
 
 	export let data: PageData;
 </script>
@@ -22,6 +22,6 @@
 	<label for="Email Confirmation">Email Confirmation</label>
 	<input type="email" id="emailConfirm" placeholder="Email Confirmation" />
 
-	<a href="/arcade" role="button">Back</a>
+	<a href="/" role="button">Back</a>
 	<button>Create</button>
 </main>
