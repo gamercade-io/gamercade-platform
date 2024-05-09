@@ -13,6 +13,6 @@
 	<label for="Password">Password</label>
 	<input type="password" id="password" placeholder="Password" />
 
-	<button>Login</button>
+	<a href="/arcade/top" role="button">Login</a>
 	<a href="/arcade/register" role="button">Register</a>
 </main>
