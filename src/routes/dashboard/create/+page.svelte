@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BackButton from '$lib/BackButton.svelte';
 	import type { PageData } from '../create/$types';
 
 	export let data: PageData;
@@ -15,6 +16,6 @@
 	<label for="Long Description">Long Description</label>
 	<input name="longDescription" placeholder="Long Description" />
 
-	<a href="/dashboard" role="button">Back</a>
+	<BackButton />
 	<button>Create</button>
 </main>

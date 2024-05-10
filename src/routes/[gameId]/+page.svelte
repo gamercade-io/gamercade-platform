@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BackButton from '$lib/BackButton.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -6,5 +7,5 @@
 
 View Game: {data.gameId}
 
-<a href="/" role="button">Back</a>
+<BackButton />
 <a href="/{data.gameId}/manage" role="button">Manage</a>

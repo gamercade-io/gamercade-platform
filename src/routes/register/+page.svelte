@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BackButton from '$lib/BackButton.svelte';
 	import type { PageData } from '../register/$types';
 
 	export let data: PageData;
@@ -20,6 +21,6 @@
 	<label for="Email Confirmation">Email Confirmation</label>
 	<input type="email" id="emailConfirm" placeholder="Email Confirmation" />
 
-	<a href="/" role="button">Back</a>
+	<BackButton />
 	<button>Create</button>
 </main>

@@ -34,6 +34,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@picocss/pico": "^2.0.6"
+		"@picocss/pico": "^2.0.6",
+		"@tauri-apps/api": "^1.5.5"
 	}
 }
