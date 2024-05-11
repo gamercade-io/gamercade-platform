@@ -11,7 +11,9 @@
 
 	function tryLogin() {
 		waiting = true;
-		invoke('plugin:auth|try_login', { username, password }).finally(() => (waiting = false));
+		invoke('plugin:auth|try_login', { username, password })
+			.catch((err) => console.log(err))
+			.finally(() => (waiting = false));
 	}
 
 	function clickedRegister() {
