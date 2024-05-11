@@ -12,7 +12,7 @@
 	function tryLogin() {
 		if (username && password) {
 			waiting = true;
-			invoke('plugin:auth|try_login', { username, password })
+			invoke('plugin:auth|login', { username, password })
 				.then(() => console.log('Logged in successfully.'))
 				.catch((err) => console.log(err))
 				.finally(() => (waiting = false));

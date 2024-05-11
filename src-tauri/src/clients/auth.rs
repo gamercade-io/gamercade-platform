@@ -15,7 +15,7 @@ use tauri::{
 };
 
 #[tauri::command]
-async fn try_login(
+async fn login(
     state: State<'_, AppState>,
     username: String,
     password: String,
@@ -41,7 +41,7 @@ async fn try_login(
 }
 
 #[tauri::command]
-async fn try_signup(
+async fn signup(
     state: State<'_, AppState>,
     username: String,
     email: String,
@@ -68,8 +68,18 @@ async fn try_signup(
     Ok(())
 }
 
+#[tauri::command]
+async fn update_password(
+    state: State<'_, AppState>,
+    previous: String,
+    new: String,
+) -> Result<(), String> {
+    // TODO: Implement This
+    Err("Not Implemented".to_string())
+}
+
 pub fn auth_plugin<R: Runtime>() -> TauriPlugin<R> {
     Builder::new("auth")
-        .invoke_handler(tauri::generate_handler![try_login, try_signup])
+        .invoke_handler(tauri::generate_handler![login, signup, update_password])
         .build()
 }

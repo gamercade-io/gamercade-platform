@@ -55,7 +55,7 @@
 		}
 
 		waiting = true;
-		invoke('plugin:auth|try_signup', { username, password, email })
+		invoke('plugin:auth|signup', { username, password, email })
 			.catch((err) => console.log(err))
 			.finally(() => (waiting = false));
 	}
