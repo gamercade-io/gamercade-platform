@@ -1,21 +1,8 @@
-<script>
-	import { goto } from '$app/navigation';
-
-	function gotoArcade() {
-		goto('/');
-	}
-	function gotoLibrary() {
-		goto('/library');
-	}
-	function gotoSettings() {
-		goto('/settings');
-	}
-	function gotoDashboard() {
-		goto('/dashboard');
-	}
+<script lang="ts">
+	import GoToButton from './GoToButton.svelte';
 </script>
 
-<button on:click={gotoArcade}>Arcade</button>
-<button on:click={gotoLibrary}>Library</button>
-<button on:click={gotoSettings}>Settings</button>
-<button on:click={gotoDashboard}>Creator Dashboard</button>
+<GoToButton target="/" text="Arcade" />
+<GoToButton target="/library" text="Library" />
+<GoToButton target="/settings" text="Settings" />
+<GoToButton target="/dashboard" text="Creator Dashboard" />

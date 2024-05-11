@@ -5,15 +5,20 @@
 
 	export let data: PageData;
 
-	let username: String = '';
-	let password: String = '';
+	let username: String | null = null;
+	let password: String | null = null;
 	let waiting: boolean = false;
 
 	function tryLogin() {
-		waiting = true;
-		invoke('plugin:auth|try_login', { username, password })
-			.catch((err) => console.log(err))
-			.finally(() => (waiting = false));
+		if (username && password) {
+			waiting = true;
+			invoke('plugin:auth|try_login', { username, password })
+				.then(() => console.log('Logged in successfully.'))
+				.catch((err) => console.log(err))
+				.finally(() => (waiting = false));
+		} else {
+			// TODO: Show errors for missing username or passwords
+		}
 	}
 
 	function clickedRegister() {
@@ -34,6 +39,6 @@
 		bind:value={password}
 	/>
 
-	<button disabled={waiting} on:click={tryLogin}>Login</button>
+	<button disabled={waiting} aria-busy={waiting} on:click={tryLogin}>Login</button>
 	<button disabled={waiting} on:click={clickedRegister}>Register</button>
 </main>

@@ -17,6 +17,7 @@
 	let passwordInvalid: boolean | null = null;
 	let emailInvalid: boolean | null = null;
 	let waiting: boolean = false;
+	// TOOD: Show a modal with the result of the sign up request
 
 	function resetUsername() {
 		usernameInvalid = null;

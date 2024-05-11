@@ -1,22 +1,25 @@
-use std::{thread, time::Duration};
-
+use futures::TryFutureExt;
 use gamercade_interface::{
-    auth::{auth_service_client::AuthServiceClient, login_request::Provider, LoginRequest},
+    auth::{login_request::Provider, LoginRequest, SignUpRequest},
     Session,
 };
 
-use crate::auth_client;
-
-use super::SERVICE_IP_GRPC;
+use crate::{
+    app_state::{AppState, AuthState},
+    auth_client,
+};
 
 use tauri::{
     plugin::{Builder, TauriPlugin},
-    Runtime,
+    Runtime, State,
 };
 
 #[tauri::command]
-async fn try_login(username: String, password: String) -> Result<(), String> {
-    println!("trying to login...");
+async fn try_login(
+    state: State<'_, AppState>,
+    username: String,
+    password: String,
+) -> Result<(), String> {
     let mut client = auth_client().await?;
 
     let request = LoginRequest {
@@ -24,23 +27,45 @@ async fn try_login(username: String, password: String) -> Result<(), String> {
         password,
     };
 
-    let response = client.login(request).await;
+    let response = client
+        .login(request)
+        .map_err(|e| e.to_string())
+        .await?
+        .into_inner();
 
-    match response {
-        Ok(ok) => {
-            let response = ok.into_inner();
-            let session = Session::from(response.session);
-            println!("logged in successfully!");
-            Ok(())
-        }
-        Err(err) => Err(format!("try_login error: {err}")),
-    }
+    let session = Session::from(response.session);
+    let mut lock = state.auth_state.lock().await;
+    *lock = AuthState::SessionHeld(session);
+
+    Ok(())
 }
 
 #[tauri::command]
-async fn try_signup(username: String, email: String, password: String) -> Result<(), String> {
-    thread::sleep(Duration::from_secs(1));
-    Err("Not Implemented".to_string())
+async fn try_signup(
+    state: State<'_, AppState>,
+    username: String,
+    email: String,
+    password: String,
+) -> Result<(), String> {
+    let mut client = auth_client().await?;
+
+    let request = SignUpRequest {
+        username,
+        email,
+        password,
+    };
+
+    let response = client
+        .sign_up(request)
+        .map_err(|e| e.to_string())
+        .await?
+        .into_inner();
+
+    let session = Session::from(response.session);
+    let mut lock = state.auth_state.lock().await;
+    *lock = AuthState::SessionHeld(session);
+
+    Ok(())
 }
 
 pub fn auth_plugin<R: Runtime>() -> TauriPlugin<R> {

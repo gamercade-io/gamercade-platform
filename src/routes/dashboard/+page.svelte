@@ -1,3 +1,7 @@
+<script>
+	import GoToButton from '$lib/GoToButton.svelte';
+</script>
+
 <h1>Creator Dashboard</h1>
 
-<a href="/dashboard/create" role="button">Create New Game</a>
+<GoToButton target="/dashboard/create" text="Create New Game" />
