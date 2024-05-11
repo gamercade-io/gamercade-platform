@@ -3,34 +3,48 @@ use tauri::{
     Runtime,
 };
 
+use super::game_client;
+
 #[tauri::command]
 async fn get_single_game_info() -> Result<(), String> {
-    Err("Not Implemented".to_string())
+    let mut client = game_client().await?;
+
+    Err("TODO: Not Implemented".to_string())
 }
 
 #[tauri::command]
 async fn get_multiple_games_info() -> Result<(), String> {
-    Err("Not Implemented".to_string())
+    let mut client = game_client().await?;
+
+    Err("TODO: Not Implemented".to_string())
 }
 
 #[tauri::command]
 async fn get_game_detailed_info() -> Result<(), String> {
-    Err("Not Implemented".to_string())
+    let mut client = game_client().await?;
+
+    Err("TODO: Not Implemented".to_string())
 }
 
 #[tauri::command]
 async fn create_game() -> Result<(), String> {
-    Err("Not Implemented".to_string())
+    let mut client = game_client().await?;
+
+    Err("TODO: Not Implemented".to_string())
 }
 
 #[tauri::command]
 async fn update_game() -> Result<(), String> {
-    Err("Not Implemented".to_string())
+    let mut client = game_client().await?;
+
+    Err("TODO: Not Implemented".to_string())
 }
 
 #[tauri::command]
 async fn delete_game() -> Result<(), String> {
-    Err("Not Implemented".to_string())
+    let mut client = game_client().await?;
+
+    Err("TODO: Not Implemented".to_string())
 }
 
 pub fn game_plugin<R: Runtime>() -> TauriPlugin<R> {

@@ -2,6 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use app::{app_state::AppState, *};
+use tauri::Manager;
 
 fn main() {
     tauri::Builder::default()

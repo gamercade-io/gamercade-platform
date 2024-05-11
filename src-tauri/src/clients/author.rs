@@ -1,16 +1,29 @@
+use gamercade_interface::{author::PermissionLevel, common::Empty};
 use tauri::{
     plugin::{Builder, TauriPlugin},
     Runtime,
 };
 
+use super::author_client;
+
 #[tauri::command]
 async fn adjust_game_author() -> Result<(), String> {
-    Err("Not Implemented".to_string())
+    let mut client = author_client().await?;
+
+    Err("TODO: Not Implemented".to_string())
 }
 
 #[tauri::command]
-async fn get_global_permission_levels() -> Result<(), String> {
-    Err("Not Implemented".to_string())
+async fn get_global_permission_levels() -> Result<Vec<PermissionLevel>, String> {
+    let mut client = author_client().await?;
+
+    let response = client
+        .get_global_permission_levels(Empty {})
+        .await
+        .map_err(|e| e.to_string())?
+        .into_inner();
+
+    Ok(response.levels)
 }
 
 pub fn author_plugin<R: Runtime>() -> TauriPlugin<R> {

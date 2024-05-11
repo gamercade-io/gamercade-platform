@@ -15,33 +15,3 @@ pub mod app_state;
 mod clients;
 
 pub use clients::plugins::*;
-
-pub(crate) async fn auth_client() -> Result<AuthServiceClient<Channel>, String> {
-    AuthServiceClient::connect(SERVICE_IP_GRPC)
-        .map_err(|e| e.to_string())
-        .await
-}
-
-pub(crate) async fn author_client() -> Result<AuthorServiceClient<Channel>, String> {
-    AuthorServiceClient::connect(SERVICE_IP_GRPC)
-        .map_err(|e| e.to_string())
-        .await
-}
-
-pub(crate) async fn game_client() -> Result<GameServiceClient<Channel>, String> {
-    GameServiceClient::connect(SERVICE_IP_GRPC)
-        .map_err(|e| e.to_string())
-        .await
-}
-
-pub(crate) async fn platform_client() -> Result<PlatformServiceClient<Channel>, String> {
-    PlatformServiceClient::connect(SERVICE_IP_GRPC)
-        .map_err(|e| e.to_string())
-        .await
-}
-
-pub(crate) async fn tag_client() -> Result<TagServiceClient<Channel>, String> {
-    TagServiceClient::connect(SERVICE_IP_GRPC)
-        .map_err(|e| e.to_string())
-        .await
-}

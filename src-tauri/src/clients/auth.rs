@@ -4,15 +4,14 @@ use gamercade_interface::{
     Session,
 };
 
-use crate::{
-    app_state::{AppState, AuthState},
-    auth_client,
-};
+use crate::app_state::{AppState, AuthState};
 
 use tauri::{
     plugin::{Builder, TauriPlugin},
     Runtime, State,
 };
+
+use super::auth_client;
 
 #[tauri::command]
 async fn login(
@@ -74,8 +73,9 @@ async fn update_password(
     previous: String,
     new: String,
 ) -> Result<(), String> {
+    let mut client = auth_client().await?;
     // TODO: Implement This
-    Err("Not Implemented".to_string())
+    Err("TODO: Not Implemented".to_string())
 }
 
 pub fn auth_plugin<R: Runtime>() -> TauriPlugin<R> {

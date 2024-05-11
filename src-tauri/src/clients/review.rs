@@ -3,9 +3,13 @@ use tauri::{
     Runtime,
 };
 
+use super::review_client;
+
 #[tauri::command]
 async fn review_game() -> Result<(), String> {
-    Err("Not Implemented".to_string())
+    let mut client = review_client().await?;
+
+    Err("TODO: Not Implemented".to_string())
 }
 
 pub fn review_plugin<R: Runtime>() -> TauriPlugin<R> {
