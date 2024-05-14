@@ -10,6 +10,8 @@ use super::tag_client;
 async fn adjust_game_tag() -> Result<(), String> {
     let mut client = tag_client().await?;
 
+    // TODO: Auth
+
     Err("TODO: Not Implemented".to_string())
 }
 

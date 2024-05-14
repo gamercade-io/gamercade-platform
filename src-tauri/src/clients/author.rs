@@ -9,7 +9,7 @@ use super::author_client;
 #[tauri::command]
 async fn adjust_game_author() -> Result<(), String> {
     let mut client = author_client().await?;
-
+    // TODO: Auth
     Err("TODO: Not Implemented".to_string())
 }
 

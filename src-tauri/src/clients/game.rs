@@ -34,6 +34,8 @@ async fn create_game(
 ) -> Result<(), String> {
     let mut client = game_client().await?;
 
+    // TODO: Auth
+
     Err("TODO: Not Implemented".to_string())
 }
 

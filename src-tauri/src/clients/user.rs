@@ -14,11 +14,17 @@ async fn get_user_info() -> Result<(), String> {
 
 #[tauri::command]
 async fn get_users_info() -> Result<(), String> {
+    let mut client = user_client().await?;
+
     Err("TODO: Not Implemented".to_string())
 }
 
 #[tauri::command]
 async fn update_email() -> Result<(), String> {
+    let mut client = user_client().await?;
+
+    // TODO: Auth
+
     Err("TODO: Not Implemented".to_string())
 }
 

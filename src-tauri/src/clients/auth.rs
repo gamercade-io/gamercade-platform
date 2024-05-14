@@ -75,6 +75,7 @@ async fn update_password(
 ) -> Result<(), String> {
     let mut client = auth_client().await?;
     // TODO: Implement This
+    // TODO: Auth
     Err("TODO: Not Implemented".to_string())
 }
 

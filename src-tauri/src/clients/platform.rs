@@ -23,12 +23,16 @@ async fn game_search() -> Result<(), String> {
 async fn get_editable_games() -> Result<(), String> {
     let mut client = platform_client().await?;
 
+    // TODO: Auth
+
     Err("TODO: Not Implemented".to_string())
 }
 
 #[tauri::command]
 async fn get_voted_games() -> Result<(), String> {
     let mut client = platform_client().await?;
+
+    // TODO: Auth
 
     Err("TODO: Not Implemented".to_string())
 }

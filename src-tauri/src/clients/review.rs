@@ -9,6 +9,8 @@ use super::review_client;
 async fn review_game() -> Result<(), String> {
     let mut client = review_client().await?;
 
+    // TODO: Auth
+
     Err("TODO: Not Implemented".to_string())
 }
 
