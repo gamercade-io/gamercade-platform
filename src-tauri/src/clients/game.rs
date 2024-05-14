@@ -34,7 +34,7 @@ async fn create_game(
 ) -> Result<(), String> {
     let mut client = game_client().await?;
 
-    // TODO: Auth
+    // TODO: Auth 
 
     Err("TODO: Not Implemented".to_string())
 }
@@ -43,12 +43,16 @@ async fn create_game(
 async fn update_game() -> Result<(), String> {
     let mut client = game_client().await?;
 
+    // TODO: Auth
+
     Err("TODO: Not Implemented".to_string())
 }
 
 #[tauri::command]
 async fn delete_game() -> Result<(), String> {
     let mut client = game_client().await?;
+
+    // TODO: Auth
 
     Err("TODO: Not Implemented".to_string())
 }
