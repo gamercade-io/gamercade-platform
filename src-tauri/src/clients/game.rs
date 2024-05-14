@@ -27,7 +27,11 @@ async fn get_game_detailed_info() -> Result<(), String> {
 }
 
 #[tauri::command]
-async fn create_game() -> Result<(), String> {
+async fn create_game(
+    game_title: String,
+    short_description: String,
+    long_description: Option<String>,
+) -> Result<(), String> {
     let mut client = game_client().await?;
 
     Err("TODO: Not Implemented".to_string())

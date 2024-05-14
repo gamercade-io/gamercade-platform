@@ -12,11 +12,11 @@ type GlobalPermissionLevel = {
 	level_name: string;
 };
 
-let globalTags: GlobalTag[] = [];
-let globalPermissionLevels: GlobalPermissionLevel[] = [];
+let globalTags: GlobalTag[] | undefined = [];
+let globalPermissionLevels: GlobalPermissionLevel[] | undefined = [];
 
 export async function getGlobalTags(): Promise<GlobalTag[]> {
-	if (globalTags.length === 0) {
+	if (!globalTags) {
 		try {
 			globalTags = await invoke<GlobalTag[]>('plugin:tag|get_global_tags');
 		} catch (e) {
@@ -29,7 +29,7 @@ export async function getGlobalTags(): Promise<GlobalTag[]> {
 }
 
 export async function getGlobalPermissionLevels(): Promise<GlobalPermissionLevel[]> {
-	if (globalPermissionLevels.length === 0) {
+	if (!globalPermissionLevels) {
 		try {
 			globalPermissionLevels = await invoke<GlobalPermissionLevel[]>(
 				'plugin:author|get_global_permission_levels'
