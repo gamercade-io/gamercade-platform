@@ -5,9 +5,9 @@ use gamercade_interface::{
     game::game_service_client::GameServiceClient,
     platform::platform_service_client::PlatformServiceClient,
     review::review_service_client::ReviewServiceClient, tag::tag_service_client::TagServiceClient,
-    users::user_service_client::UserServiceClient,
+    users::user_service_client::UserServiceClient, Session, SESSION_METADATA_KEY,
 };
-use tonic::transport::Channel;
+use tonic::{metadata::MetadataValue, transport::Channel, Request};
 
 use crate::SERVICE_IP_GRPC;
 
@@ -69,4 +69,28 @@ pub(crate) async fn user_client() -> Result<UserServiceClient<Channel>, String> 
     UserServiceClient::connect(SERVICE_IP_GRPC)
         .map_err(|e| e.to_string())
         .await
+}
+
+#[derive(Debug)]
+pub struct WithSession<T> {
+    pub session: Session,
+    pub data: T,
+}
+
+impl<T> WithSession<T> {
+    pub fn new(session: &Session, data: T) -> Self {
+        Self {
+            session: session.clone(),
+            data,
+        }
+    }
+
+    pub fn authorized_request(self) -> Request<T> {
+        let mut request = Request::new(self.data);
+        request.metadata_mut().insert_bin(
+            SESSION_METADATA_KEY,
+            MetadataValue::from_bytes(self.session.bytes()),
+        );
+        request
+    }
 }

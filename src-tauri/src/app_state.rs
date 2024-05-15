@@ -15,3 +15,12 @@ pub enum AuthState {
 pub struct AppState {
     pub auth_state: Mutex<AuthState>,
 }
+
+impl AppState {
+    pub async fn get_session(&self) -> Result<Session, String> {
+        match &*self.auth_state.lock().await {
+            AuthState::Unauthorized => Err("Session not found".to_string()),
+            AuthState::SessionHeld(session) => Ok(session.clone()),
+        }
+    }
+}

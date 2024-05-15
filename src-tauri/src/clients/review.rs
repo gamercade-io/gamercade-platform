@@ -1,12 +1,14 @@
 use tauri::{
     plugin::{Builder, TauriPlugin},
-    Runtime,
+    Runtime, State,
 };
+
+use crate::app_state::AppState;
 
 use super::review_client;
 
 #[tauri::command]
-async fn review_game() -> Result<(), String> {
+async fn review_game(state: State<'_, AppState>) -> Result<(), String> {
     let mut client = review_client().await?;
 
     // TODO: Auth

@@ -1,13 +1,15 @@
 use gamercade_interface::{common::Empty, tag::Tag};
 use tauri::{
     plugin::{Builder, TauriPlugin},
-    Runtime,
+    Runtime, State,
 };
+
+use crate::app_state::AppState;
 
 use super::tag_client;
 
 #[tauri::command]
-async fn adjust_game_tag() -> Result<(), String> {
+async fn adjust_game_tag(state: State<'_, AppState>) -> Result<(), String> {
     let mut client = tag_client().await?;
 
     // TODO: Auth

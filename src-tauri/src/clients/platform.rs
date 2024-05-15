@@ -1,7 +1,9 @@
 use tauri::{
     plugin::{Builder, TauriPlugin},
-    Runtime,
+    Runtime, State,
 };
+
+use crate::app_state::AppState;
 
 use super::platform_client;
 
@@ -20,7 +22,7 @@ async fn game_search() -> Result<(), String> {
 }
 
 #[tauri::command]
-async fn get_editable_games() -> Result<(), String> {
+async fn get_editable_games(state: State<'_, AppState>) -> Result<(), String> {
     let mut client = platform_client().await?;
 
     // TODO: Auth
@@ -29,7 +31,7 @@ async fn get_editable_games() -> Result<(), String> {
 }
 
 #[tauri::command]
-async fn get_voted_games() -> Result<(), String> {
+async fn get_voted_games(state: State<'_, AppState>) -> Result<(), String> {
     let mut client = platform_client().await?;
 
     // TODO: Auth

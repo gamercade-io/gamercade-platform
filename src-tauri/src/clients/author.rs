@@ -1,13 +1,15 @@
 use gamercade_interface::{author::PermissionLevel, common::Empty};
 use tauri::{
     plugin::{Builder, TauriPlugin},
-    Runtime,
+    Runtime, State,
 };
+
+use crate::app_state::AppState;
 
 use super::author_client;
 
 #[tauri::command]
-async fn adjust_game_author() -> Result<(), String> {
+async fn adjust_game_author(state: State<'_, AppState>) -> Result<(), String> {
     let mut client = author_client().await?;
     // TODO: Auth
     Err("TODO: Not Implemented".to_string())
