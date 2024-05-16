@@ -1,6 +1,7 @@
 use gamercade_interface::{
+    common::Empty,
     game::MultipleGamesInfoResponse,
-    platform::{EditableGamesResponse, FrontPageResponse, VotedGamesResponse},
+    platform::{EditableGamesResponse, FrontPageRequest, FrontPageResponse, VotedGamesResponse},
 };
 use tauri::{
     plugin::{Builder, TauriPlugin},
@@ -9,13 +10,17 @@ use tauri::{
 
 use crate::app_state::AppState;
 
-use super::platform_client;
+use super::{platform_client, WithSession};
 
 #[tauri::command]
 async fn front_page() -> Result<FrontPageResponse, String> {
     let mut client = platform_client().await?;
 
-    Err("TODO: Not Implemented".to_string())
+    client
+        .front_page(FrontPageRequest {})
+        .await
+        .map_err(|e| e.to_string())
+        .map(|r| r.into_inner())
 }
 
 #[tauri::command]
@@ -29,18 +34,26 @@ async fn game_search() -> Result<MultipleGamesInfoResponse, String> {
 async fn get_editable_games(state: State<'_, AppState>) -> Result<EditableGamesResponse, String> {
     let mut client = platform_client().await?;
 
-    // TODO: Auth
-
-    Err("TODO: Not Implemented".to_string())
+    client
+        .get_editable_games(
+            WithSession::new(&state.get_session().await?, Empty {}).authorized_request(),
+        )
+        .await
+        .map_err(|e| e.to_string())
+        .map(|r| r.into_inner())
 }
 
 #[tauri::command]
 async fn get_voted_games(state: State<'_, AppState>) -> Result<VotedGamesResponse, String> {
     let mut client = platform_client().await?;
 
-    // TODO: Auth
-
-    Err("TODO: Not Implemented".to_string())
+    client
+        .get_voted_games(
+            WithSession::new(&state.get_session().await?, Empty {}).authorized_request(),
+        )
+        .await
+        .map_err(|e| e.to_string())
+        .map(|r| r.into_inner())
 }
 
 pub fn platform_plugin<R: Runtime>() -> TauriPlugin<R> {
