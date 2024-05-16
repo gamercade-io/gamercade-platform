@@ -8,7 +8,11 @@ use crate::app_state::AppState;
 use super::review_client;
 
 #[tauri::command]
-async fn review_game(state: State<'_, AppState>) -> Result<(), String> {
+async fn review_game(
+    state: State<'_, AppState>,
+    game_id: i64,
+    rating: Option<bool>,
+) -> Result<(), String> {
     let mut client = review_client().await?;
 
     // TODO: Auth

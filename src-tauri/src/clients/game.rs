@@ -74,7 +74,12 @@ async fn create_game(
 }
 
 #[tauri::command]
-async fn update_game(state: State<'_, AppState>) -> Result<(), String> {
+async fn update_game(
+    state: State<'_, AppState>,
+    game_title: String,
+    short_description: String,
+    long_description: Option<String>,
+) -> Result<(), String> {
     let mut client = game_client().await?;
 
     // TODO: Auth
@@ -83,7 +88,7 @@ async fn update_game(state: State<'_, AppState>) -> Result<(), String> {
 }
 
 #[tauri::command]
-async fn delete_game(state: State<'_, AppState>) -> Result<(), String> {
+async fn delete_game(state: State<'_, AppState>, game_id: i64) -> Result<(), String> {
     let mut client = game_client().await?;
 
     // TODO: Auth

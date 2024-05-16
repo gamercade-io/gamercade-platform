@@ -9,7 +9,13 @@ use crate::app_state::AppState;
 use super::author_client;
 
 #[tauri::command]
-async fn adjust_game_author(state: State<'_, AppState>) -> Result<(), String> {
+async fn adjust_game_author(
+    state: State<'_, AppState>,
+    game_id: i64,
+    user_id: i64,
+    title: Option<String>,
+    permission_level_id: Option<i32>,
+) -> Result<(), String> {
     let mut client = author_client().await?;
     // TODO: Auth
     Err("TODO: Not Implemented".to_string())

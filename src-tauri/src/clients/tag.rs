@@ -9,7 +9,12 @@ use crate::app_state::AppState;
 use super::tag_client;
 
 #[tauri::command]
-async fn adjust_game_tag(state: State<'_, AppState>) -> Result<(), String> {
+async fn adjust_game_tag(
+    state: State<'_, AppState>,
+    game_id: i64,
+    tag_id: i32,
+    set_to: bool,
+) -> Result<(), String> {
     let mut client = tag_client().await?;
 
     // TODO: Auth
