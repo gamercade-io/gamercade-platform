@@ -1,4 +1,7 @@
-use gamercade_interface::{common::Empty, tag::Tag};
+use gamercade_interface::{
+    common::Empty,
+    tag::{AdjustGameTagRequest, AdjustGameTagResponse, Tag},
+};
 use tauri::{
     plugin::{Builder, TauriPlugin},
     Runtime, State,
@@ -6,7 +9,7 @@ use tauri::{
 
 use crate::app_state::AppState;
 
-use super::tag_client;
+use super::{tag_client, WithSession};
 
 #[tauri::command]
 async fn adjust_game_tag(
@@ -14,12 +17,24 @@ async fn adjust_game_tag(
     game_id: i64,
     tag_id: i32,
     set_to: bool,
-) -> Result<(), String> {
+) -> Result<AdjustGameTagResponse, String> {
     let mut client = tag_client().await?;
 
-    // TODO: Auth
-
-    Err("TODO: Not Implemented".to_string())
+    client
+        .adjust_game_tag(
+            WithSession::new(
+                &state.get_session().await?,
+                AdjustGameTagRequest {
+                    game_id,
+                    tag_id,
+                    set_to,
+                },
+            )
+            .authorized_request(),
+        )
+        .await
+        .map_err(|e| e.to_string())
+        .map(|r| r.into_inner())
 }
 
 #[tauri::command]

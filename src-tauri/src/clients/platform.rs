@@ -25,6 +25,7 @@ async fn front_page() -> Result<FrontPageResponse, String> {
 
 #[tauri::command]
 async fn game_search() -> Result<MultipleGamesInfoResponse, String> {
+    // TODO: This
     let mut client = platform_client().await?;
 
     Err("TODO: Not Implemented".to_string())

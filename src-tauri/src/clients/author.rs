@@ -1,4 +1,7 @@
-use gamercade_interface::{author::PermissionLevel, common::Empty};
+use gamercade_interface::{
+    author::{AdjustAuthorRequest, AdjustAuthorResponse, PermissionLevel},
+    common::Empty,
+};
 use tauri::{
     plugin::{Builder, TauriPlugin},
     Runtime, State,
@@ -6,7 +9,7 @@ use tauri::{
 
 use crate::app_state::AppState;
 
-use super::author_client;
+use super::{author_client, WithSession};
 
 #[tauri::command]
 async fn adjust_game_author(
@@ -15,10 +18,28 @@ async fn adjust_game_author(
     user_id: i64,
     title: Option<String>,
     permission_level_id: Option<i32>,
-) -> Result<(), String> {
+) -> Result<AdjustAuthorResponse, String> {
     let mut client = author_client().await?;
-    // TODO: Auth
-    Err("TODO: Not Implemented".to_string())
+
+    let result = client
+        .adjust_game_author(
+            WithSession::new(
+                &state.get_session().await?,
+                AdjustAuthorRequest {
+                    game_id,
+                    user_id,
+                    title,
+                    permission_level_id,
+                },
+            )
+            .authorized_request(),
+        )
+        .await
+        .map_err(|e| e.to_string())
+        .map(|r| r.into_inner())?;
+
+    // TOOD: Update metadata
+    Ok(result)
 }
 
 #[tauri::command]

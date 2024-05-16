@@ -1,6 +1,6 @@
 use futures::TryFutureExt;
 use gamercade_interface::{
-    auth::{login_request::Provider, LoginRequest, SignUpRequest},
+    auth::{login_request::Provider, LoginRequest, SignUpRequest, UpdatePasswordRequest},
     Session,
 };
 
@@ -11,7 +11,7 @@ use tauri::{
     Runtime, State,
 };
 
-use super::auth_client;
+use super::{auth_client, WithSession};
 
 #[tauri::command]
 async fn login(
@@ -48,14 +48,12 @@ async fn signup(
 ) -> Result<(), String> {
     let mut client = auth_client().await?;
 
-    let request = SignUpRequest {
-        username,
-        email,
-        password,
-    };
-
     let response = client
-        .sign_up(request)
+        .sign_up(SignUpRequest {
+            username,
+            email,
+            password,
+        })
         .map_err(|e| e.to_string())
         .await?
         .into_inner();
@@ -74,9 +72,22 @@ async fn update_password(
     new: String,
 ) -> Result<(), String> {
     let mut client = auth_client().await?;
-    // TODO: Implement This
-    // TODO: Auth
-    Err("TODO: Not Implemented".to_string())
+
+    client
+        .update_password(
+            WithSession::new(
+                &state.get_session().await?,
+                UpdatePasswordRequest {
+                    previous_password: previous,
+                    new_password: new,
+                },
+            )
+            .authorized_request(),
+        )
+        .await
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
 }
 
 pub fn auth_plugin<R: Runtime>() -> TauriPlugin<R> {
