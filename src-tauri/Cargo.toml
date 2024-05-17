@@ -26,6 +26,7 @@ tonic = "0.11.0"
 tokio = "1.37.0"
 futures = "0.3.30"
 futures-util = "0.3.30"
+rusqlite = "0.31.0"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.

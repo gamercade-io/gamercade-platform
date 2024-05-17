@@ -15,14 +15,14 @@ pub enum AuthState {
 
 pub struct AppState {
     pub auth_state: Mutex<AuthState>,
-    pub metadata: Metadata,
+    pub metadata: Mutex<Metadata>,
 }
 
 impl std::default::Default for AppState {
     fn default() -> Self {
         Self {
             auth_state: Default::default(),
-            metadata: Metadata::new(),
+            metadata: Mutex::new(Metadata::new()),
         }
     }
 }
