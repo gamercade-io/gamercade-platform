@@ -1,6 +1,8 @@
 use gamercade_interface::Session;
 use tauri::async_runtime::Mutex;
 
+use crate::metadata::Metadata;
+
 #[derive(Default, Debug)]
 pub enum AuthState {
     // Default State
@@ -11,9 +13,18 @@ pub enum AuthState {
     SessionHeld(Session),
 }
 
-#[derive(Default)]
 pub struct AppState {
     pub auth_state: Mutex<AuthState>,
+    pub metadata: Metadata,
+}
+
+impl std::default::Default for AppState {
+    fn default() -> Self {
+        Self {
+            auth_state: Default::default(),
+            metadata: Metadata::new(),
+        }
+    }
 }
 
 impl AppState {
