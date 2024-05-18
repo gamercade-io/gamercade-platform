@@ -12,43 +12,59 @@ use crate::app_state::AppState;
 use super::{game_client, WithSession};
 
 #[tauri::command]
-async fn get_single_game_info(game_id: i64) -> Result<GameInfoBasic, String> {
+async fn get_single_game_info(
+    state: State<'_, AppState>,
+    game_id: i64,
+) -> Result<GameInfoBasic, String> {
     let mut client = game_client().await?;
 
-    // TODO: Update Metadata
     let game_info = client
         .get_single_game_info(SingleGameRequest { game_id })
         .await
         .map_err(|e| e.to_string())
         .map(|r| r.into_inner())?;
 
+    state.metadata.lock().await.update_game_basic(&game_info);
+
     Ok(game_info)
 }
 
 #[tauri::command]
-async fn get_multiple_games_info(game_ids: Vec<i64>) -> Result<MultipleGamesInfoResponse, String> {
+async fn get_multiple_games_info(
+    state: State<'_, AppState>,
+    game_ids: Vec<i64>,
+) -> Result<MultipleGamesInfoResponse, String> {
     let mut client = game_client().await?;
 
-    // TODO: Update Metadata
-    let game_info = client
+    let games_info = client
         .get_multiple_games_info(MultipleGamesRequest { game_ids })
         .await
         .map_err(|e| e.to_string())
         .map(|r| r.into_inner())?;
 
-    Ok(game_info)
+    let mut lock = state.metadata.lock().await;
+    games_info
+        .games_info
+        .iter()
+        .for_each(|game_info| lock.update_game_basic(game_info));
+
+    Ok(games_info)
 }
 
 #[tauri::command]
-async fn get_game_detailed_info(game_id: i64) -> Result<GameInfoDetailed, String> {
+async fn get_game_detailed_info(
+    state: State<'_, AppState>,
+    game_id: i64,
+) -> Result<GameInfoDetailed, String> {
     let mut client = game_client().await?;
 
-    // TODO: Update Metadata
     let game_info = client
         .get_game_detailed_info(SingleGameRequest { game_id })
         .await
         .map_err(|e| e.to_string())
         .map(|r| r.into_inner())?;
+
+    state.metadata.lock().await.update_game_detailed(&game_info);
 
     Ok(game_info)
 }
@@ -78,7 +94,7 @@ async fn create_game(
         .map_err(|e| e.to_string())
         .map(|r| r.into_inner())?;
 
-    // TODO: Update Metadata
+    state.metadata.lock().await.update_game_basic(&game_info);
     Ok(game_info)
 }
 
@@ -108,7 +124,7 @@ async fn update_game(
         .map_err(|e| e.to_string())
         .map(|r| r.into_inner())?;
 
-    // TODO: Update Metadata
+    state.metadata.lock().await.update_game_basic(&game_info);
     Ok(game_info)
 }
 
@@ -123,7 +139,7 @@ async fn delete_game(state: State<'_, AppState>, game_id: i64) -> Result<(), Str
         .await
         .map_err(|e| e.to_string())?;
 
-    // TODO: Update Metadata
+    state.metadata.lock().await.delete_game(game_id);
 
     Ok(())
 }
