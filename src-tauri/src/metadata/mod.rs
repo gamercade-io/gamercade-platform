@@ -33,6 +33,8 @@ impl Metadata {
             connection
         };
 
+        // TOOD: Populate the fields from the db
+
         Self {
             permission_levels: IntMap::default(),
             tags: IntMap::default(),
@@ -77,7 +79,7 @@ impl Metadata {
     }
 
     pub fn update_game_basic(&mut self, game_info: &GameInfoBasic) {
-        // TODO: This
+        // TODO: This, use json-patch
     }
 
     pub fn update_game_detailed(&mut self, game_info: &GameInfoDetailed) {
@@ -85,7 +87,7 @@ impl Metadata {
             self.update_game_basic(basic)
         };
 
-        // TODO: This
+        // TODO: This use json-patch
     }
 
     pub fn delete_game(&mut self, game_id: i64) {
