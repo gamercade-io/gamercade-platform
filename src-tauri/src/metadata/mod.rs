@@ -1,6 +1,10 @@
 use std::path::Path;
 
-use gamercade_interface::game::{GameInfoBasic, GameInfoDetailed};
+use gamercade_interface::{
+    author::PermissionLevel,
+    game::{GameInfoBasic, GameInfoDetailed},
+    tag::Tag,
+};
 use nohash_hasher::IntMap;
 
 mod game_metadata;
@@ -37,9 +41,40 @@ impl Metadata {
         }
     }
 
-    // TODO: Write a func to handle the global refresh updates for:
-    // - permission_levels
-    // - tags
+    pub fn update_global_tags(&mut self, tags: &[Tag]) {
+        self.connection.execute("DROP TABLE tags", ()).unwrap();
+        create_tags_table(&self.connection);
+
+        self.tags.clear();
+        tags.iter().for_each(|tag| {
+            self.connection
+                .execute(
+                    "INSERT INTO tags (id, value) VALUES (?, ?) ",
+                    (tag.pid, &tag.name),
+                )
+                .unwrap();
+            self.tags.insert(tag.pid as u8, tag.name.clone());
+        });
+    }
+
+    pub fn update_global_permission_levels(&mut self, levels: &[PermissionLevel]) {
+        self.connection
+            .execute("DROP TABLE permission_levels", ())
+            .unwrap();
+        create_permission_levels_table(&self.connection);
+
+        self.permission_levels.clear();
+        levels.iter().for_each(|level| {
+            self.connection
+                .execute(
+                    "INSERT INTO permission_levels (id, value) VALUES (?, ?) ",
+                    (level.id, &level.level_name),
+                )
+                .unwrap();
+            self.permission_levels
+                .insert(level.id as u8, level.level_name.clone());
+        });
+    }
 
     pub fn update_game_basic(&mut self, game_info: &GameInfoBasic) {
         // TODO: This
@@ -58,28 +93,19 @@ impl Metadata {
     }
 }
 
-fn init_db(conn: &Connection) {
-    // Init games
+fn create_tags_table(conn: &Connection) {
+    // Init Tags
     conn.execute(
-        "CREATE TABLE IF NOT EXISTS games (
+        "CREATE TABLE IF NOT EXISTS tags (
         id INTEGER PRIMARY KEY,
-        value TEXT NOT NULL,
-        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+        value TEXT NOT NULL
     );",
         (),
     )
     .unwrap();
+}
 
-    // Init Last Updated
-    conn.execute(
-        "CREATE TABLE IF NOT EXISTS timestamps (
-            table_name TEXT NOT NULL,
-            last_updated TIMESTAMP NOT NULL
-        );",
-        (),
-    )
-    .unwrap();
-
+fn create_permission_levels_table(conn: &Connection) {
     // Init Permission Levels
     conn.execute(
         "CREATE TABLE IF NOT EXISTS permission_levels (
@@ -89,12 +115,18 @@ fn init_db(conn: &Connection) {
         (),
     )
     .unwrap();
+}
 
-    // Init Tags
+fn init_db(conn: &Connection) {
+    create_tags_table(conn);
+    create_permission_levels_table(conn);
+
+    // Init games
     conn.execute(
-        "CREATE TABLE IF NOT EXISTS tags (
+        "CREATE TABLE IF NOT EXISTS games (
         id INTEGER PRIMARY KEY,
-        value TEXT NOT NULL
+        value TEXT NOT NULL,
+        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     );",
         (),
     )
