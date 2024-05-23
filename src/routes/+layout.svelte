@@ -16,3 +16,4 @@
 <NavBar />
 
 <slot />
+<!-- TODO: Add a global modal for notifications / toasts -->

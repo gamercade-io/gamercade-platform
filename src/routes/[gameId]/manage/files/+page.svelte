@@ -7,6 +7,13 @@
 
 Manage Game Files
 
+<!-- TODO: Add these:
+	Upload GameRom Button
+	Upload GameImage Button
+	Delete GameRom Button
+	Delete GameImage Button
+-->
+
 {data}
 
 <BackButton />

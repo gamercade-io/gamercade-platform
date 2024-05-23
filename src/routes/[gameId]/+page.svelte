@@ -8,6 +8,18 @@
 
 View Game: {data.gameId}
 
+<!-- TODO: Display these fields:
+Title
+Short Description
+Long Description
+Game Size
+Total Downloads
+Average Rating
+
+	TODO: Add Download Button
+		- Download replaced with Play if game exists
+ -->
+
 <BackButton />
 
 <GoToButton target="/{data.gameId}/manage" text="Manage" />
